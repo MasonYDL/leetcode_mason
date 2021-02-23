@@ -1737,4 +1737,36 @@ bool searchMatrix(vector<vector<int> >& matrix, int target) {
     return false;
 }
 
+
+int maxChunksToSorted(vector<int>& arr) {
+    //769 medium
+    int chunks = 0, cur_max = 0;
+    for (int i = 0; i < arr.size(); ++i) {
+       cur_max = max(cur_max, arr[i]);
+       if (cur_max == i) {
+        ++chunks; }
+}
+    return chunks;
+}
+
+
+vector<int> dailyTemperatures(vector<int>& T) {
+    //739 medium
+    int len=T.size();
+    vector<int> ans(len);
+    stack<int> s;
+    for(int i=0;i<len;++i)
+    {
+        while(!s.empty())
+        {
+            int pre_max=s.top();
+            if(T[pre_max]>=T[i])
+                break;
+            s.pop();
+            ans[pre_max]=i-pre_max;
+        }
+        s.push(i);
+    }
+    return ans;
+}
 };
