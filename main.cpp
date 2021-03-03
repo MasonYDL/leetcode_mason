@@ -1816,5 +1816,34 @@ vector<int> dailyTemperatures(vector<int>& T) {
     }
 
 
+    vector<int> sortArray(vector<int>& nums) {
+            //912 medium
+            sort(nums.begin(),nums.end());
+        return nums;
+    }
+
+
+    vector<int> twoSum_1(vector<int>& nums, int target) {
+        //1 easy
+        unordered_map<int, int> m;
+        vector<int> ans;
+        for(int i=0;i<nums.size();++i)
+        {
+            int num=nums[i];
+            auto pos=m.find(target-num);
+            if(pos==m.end())
+            {
+                m[num]=i;
+            }
+            else
+            {
+                ans.push_back(pos->second);
+                ans.push_back(i);
+                break;
+            }
+        }
+        return ans;
+    }
+
 };
 
