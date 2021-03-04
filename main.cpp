@@ -1845,5 +1845,39 @@ vector<int> dailyTemperatures(vector<int>& T) {
         return ans;
     }
 
+    bool isIsomorphic(string s, string t) {
+        //205 easy
+        vector<int> s_first(256,0), t_first(256,0);
+        for(int i=0;i<s.size();++i)
+        {
+            if(s_first[s[i]]!=t_first[t[i]])
+                return false;
+            s_first[s[i]]=t_first[t[i]]=i+1;
+        }
+        return true;
+    }
+
+    int countBinarySubstrings(string s) {
+        //696 easy
+        int pre=0,cur=1,count=0;
+        for(int i=1;i< s.size();++i)
+        {
+            if(s[i]==s[i-1])
+            {
+                ++cur;
+            }
+            else
+            {
+                pre=cur;
+                cur=1;
+            }
+            if(pre>=cur)
+            {
+                ++count;
+            }
+        }
+        return count;
+    }
 };
+
 
