@@ -1878,6 +1878,28 @@ vector<int> dailyTemperatures(vector<int>& T) {
         }
         return count;
     }
+
+
+    int longestPalindrome(string s) {
+        //409 easy
+        vector<int> v(52,0);
+        for(int i=0;i<s.size();++i)
+        {
+            if(s[i]>='a' && s[i]<='z')
+                ++v[s[i]-'a'];
+            else
+                ++v[s[i]-'A'+26];
+        }
+        int res=0;
+        for(int i=0;i<52;++i)
+        {
+            if((res&1) && (v[i]&1))
+                res+=v[i]-1;
+            else
+                res+=v[i];
+        }
+        return res;
+    }
 };
 
 
