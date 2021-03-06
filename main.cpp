@@ -1900,6 +1900,55 @@ vector<int> dailyTemperatures(vector<int>& T) {
         }
         return res;
     }
+
+    vector<string> ambiguousCoordinates(string S) {
+        //816 medium
+        vector<string> ans;
+        S=S.substr(1,S.size()-2);
+        for(int i=1;i<S.size();++i)
+        {
+            string temp1=S.substr(0,i);
+            string temp2=S.substr(i);
+            vector<string> temp3=par(temp);
+            vector<string> temp4=par(temp);
+            for(auto it: temp3)
+                for(auto it1:temp4)
+                {
+                    res.push('('+it+','+it1+')');
+                }
+        }
+        return res;
+    }
+    
+    vector<string> par(string now)
+    {
+        vector<string> temp;
+        if(now[0]=='0')
+        {
+            long long now1=stoll(now);
+            if(now1!=0 && now[now.size()-1]!='0')
+                temp.push_back("0."+now.substr(1));
+            else
+            {
+                if(now.size()==1)
+                    temp.push_back("0)");
+            }
+        }
+        else
+        {
+            if(now[now.size()-1]=='0')
+                temp.push_back(now);
+            else
+            {
+                temp.push_back(now);
+                for(int i=0;i<now.size();++1)
+                {
+                    temp.push_back(now.substr(0,i+1)+'.'+now.substr(i+1));
+                }
+            }
+            return temp;
+        }
+    }
 };
 
 
