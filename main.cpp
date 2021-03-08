@@ -1949,6 +1949,92 @@ vector<int> dailyTemperatures(vector<int>& T) {
             return temp;
         }
     }
+
+    const string letterMap[10]={
+        "",
+        ""
+        "abc",
+        "def",
+        "ghi",
+        "jkl",
+        "mno",
+        "pqrs",
+        "tuv",
+        "wxyz",
+    };
+    vector<string> res_17;
+    string s_17;
+    vector<string> letterCombinations(string digits) {
+        //17 medium
+        s_17.clear();
+        res_17.clear();
+        if(digits.size()==0)
+            return res_17;
+        traversal_17(digits,0);
+        return res_17;
+    }
+
+    void traversal_17(const string &digits,int index)
+    {
+        if(index=digits.size())
+        {
+            res_17.push_back(s_17);
+            return ;
+        }
+        int digit=digits[index]-'0';
+        string letter=letterMap[digit];
+        for(int i=0;i<letter.size();++i)
+        {
+            s_17.push_back(letter[i]);
+            traversal_17(digits,i+1);
+            s_17.pop_back();
+        }
+    }
+
+
+    vector<vector<string> > partition(string s) {
+        //131 medium
+        vector<vector<string> > res;
+        backtrack_131(s,res,{});
+        return res;
+    }
+
+    void backtrack_131(string s, vector<vector<string> > &res, vector<string> path)
+    {
+        if(s.size()==0)
+        {
+            res.push_back(path);
+            return ;
+        }
+        for(int i=1;i<s.size();++i)
+        {
+            string pre=s.substr(0,i);
+            if(isPali_131(pre))
+            {
+                path.push_back(pre);
+                backtrack_131(s.substr(i),res,path);
+                path.pop_back();
+            }
+        }
+    }
+    
+    bool isPali_131(string s)
+    {
+        
+        int begin=0;
+        int end=s.size()-1;
+        if(end==-1)
+            return true;
+        while(begin<=end)
+        {
+            if(s[begin]!=s[end])
+                return false;
+            begin++;
+            end--;
+        }
+        return true;
+    }
+
 };
 
 
