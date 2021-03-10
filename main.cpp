@@ -2066,12 +2066,35 @@ vector<int> dailyTemperatures(vector<int>& T) {
     }
 
 
-    int longestSubstring(string s, int k) {
-        //395 medium
-        if(s.size()==0)
-            return 0;
-        
+    bool canReach(vector<int>& arr, int start) {
+        //1306 medium
+        vector<int> visited(arr.size(),0);
+        visited[start]=1;
+        return helper_1306(arr,start,visited);
+    }   
+
+    bool helper_1306(vector<int>& arr, int start, vector<int>& visited)
+    {
+    if(arr[start]==0)
+        return true;
+    bool flag=false;
+    if(start-arr[start]>=0)
+    {
+        if(visited[start-arr[start]]==0)
+        {visited[start-arr[start]]=1;
+        flag|= helper_1306(arr,start-arr[start],visited);}
     }
+        
+    if(start+arr[start]<arr.size())
+        {
+            if(visited[start+arr[start]]==0)
+           { visited[start+arr[start]]=1;
+            flag|= helper_1306(arr,start+arr[start],visited);}
+        }
+    return flag;
+    }
+
+    
 };
 
 
