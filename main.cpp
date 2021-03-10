@@ -2048,6 +2048,30 @@ vector<int> dailyTemperatures(vector<int>& T) {
             checkPowersOfThree((n-1)/3);
         return false;
     }
+
+    int multiply(int A, int B) {
+        //面试题0805 meduim
+        if(A>B)
+            swap(A,B);
+        if(A==1)
+            return B;
+        if(B==1)
+            return A;
+        if(A==0 || B==0)
+            return 0;
+        if(A%2==1)
+            return multiply(A/2,B)+multiply(A/2+1,B);
+        else   
+            return multiply(A/2,B)+multiply(A/2,B);
+    }
+
+
+    int longestSubstring(string s, int k) {
+        //395 medium
+        if(s.size()==0)
+            return 0;
+        
+    }
 };
 
 
