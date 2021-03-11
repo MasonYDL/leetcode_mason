@@ -2094,7 +2094,35 @@ vector<int> dailyTemperatures(vector<int>& T) {
     return flag;
     }
 
+
+    bool canPartitionKSubsets(vector<int>& nums, int k) {
+        //698 medium
+        int sum=0;
+        for(int i=0;i<nums.size();++i)
+            sum+=nums[i];
+        if(!(sum%k))
+            return false;
+        int temp=sum/k;
+        vector<int> visited(nums.size(),0);
+        return helper_698(nums,sum,0,visited);
+    }
     
+    bool helper_698(vector<int> & nums, int sum,int tempsum, vector<int>& visited)
+    {
+        if(sum==0)
+            return true;
+        for(int i=0;i<nums.size();++i)
+        {
+            if(visited[i] || tempsum+nums[i]>sum)
+                continue;
+            visited[i]=true;
+            if(helper_698(nums,sum-nums[i],tempsum+nums[i],visited))
+                return true;
+            visited[i]=false;
+        }
+        return false;
+    }
+  
 };
 
 
