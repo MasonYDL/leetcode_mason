@@ -194,7 +194,7 @@ public:
             return -1;
         }
         // 按照位置去判断是从前还是后去遍历
-        Node* curr = nullptr;
+        Node1* curr = nullptr;
         if (index + index < size)
         {
             curr = head;
@@ -328,7 +328,8 @@ public:
 
     ListNode* mergeTwoLists(ListNode *a, ListNode *b) {
         if ((!a) || (!b)) return a ? a : b;
-        ListNode head, *tail = &head, *aPtr = a, *bPtr = b;
+        ListNode head();
+        ListNode *tail = &head, *aPtr = a, *bPtr = b;
         while (aPtr && bPtr) {
             if (aPtr->val < bPtr->val) {
                 tail->next = aPtr; aPtr = aPtr->next;
@@ -351,6 +352,84 @@ public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
         return merge(lists, 0, lists.size() - 1);
     }
+
+
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        //面试题02.05 medium
+        ListNode* temp1=l1;
+        ListNode* prev;
+        int pos=0;
+        int s;
+        int t=0;
+        if(l1==nullptr)
+            return l2;
+        if(l2==nullptr)
+            return l1;
+        while(l1 && l2)
+        {
+            s=l1->val+l2->val+pos;
+            pos=0;
+            if(s>9)
+            {
+                s=s-10;
+                pos=1;
+            }
+            
+            l1->val=s;
+            cout<<l1->val<<endl;
+            prev=l1;
+            l1=l1->next;
+            l2=l2->next;
+        }
+        if(!l1 && !l2)
+        {
+            if(pos==0)
+                return temp1;
+            else
+            {
+                cout<<1<<endl;
+                ListNode* tmp=new(ListNode);
+                tmp->val=1;
+                prev->next=tmp;
+                return temp1;
+            }
+        }
+        else
+        {
+            if(l1==nullptr)
+                {
+                    prev->next=l2;
+                    l1=prev->next;
+                }
+            
+            while(l1->next)
+            {
+                s=l1->val+pos;
+                pos=0;
+                if(s>9)
+                {
+                    s=s-10;
+                    pos=1;
+                }
+                l1->val=s;
+                l1=l1->next;
+            }
+            s=l1->val+pos;
+            if(s>9)
+            {
+                s=s-10;
+                l1->val=s;
+                ListNode* tmp=new(ListNode);
+                tmp->val=1;
+                l1->next=tmp;
+            }
+            else{
+                l1->val=s;
+            }
+
+        }
+        return temp1;
+    }
 };
 
-};
+
