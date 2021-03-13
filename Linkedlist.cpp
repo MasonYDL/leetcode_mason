@@ -430,6 +430,105 @@ public:
         }
         return temp1;
     }
+
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        // 445 medium
+        ListNode* temp1=l1;
+        ListNode* temp2=l2;
+        ListNode* tmp;
+        int k=0;
+        bool flag=true;;
+        while(temp1->next && temp2->next)
+        {
+            temp1=temp1->next;
+            temp2=temp2->next;
+        }
+        if(temp2->next)
+        {
+            swap(l1,l2);
+            swap(temp1,temp2);
+        }
+
+        while(temp1->next)
+        {
+            temp1=temp1->next;
+            ++k;
+        }
+        temp1=l1;
+        temp2=l2;
+        cout<<k<<endl;
+        while(k--)
+            temp1=temp1->next;
+        while(temp1)
+        {
+            temp1->val=temp1->val+temp2->val;
+            temp1=temp1->next;
+            temp2=temp2->next;
+        }
+        cout<<2<<endl;
+        temp1=l1;
+        while(flag && temp1->next)
+        {
+            cout<<3<<endl;
+
+            temp1=l1;
+            flag=false;
+            while(temp1->next)
+            {
+                cout<<4<<endl;
+                
+                if(temp1->next->val>9)
+                {
+                    cout<<temp1->next->val<<endl;
+                    temp1->next->val-=10;
+                    temp1->val+=1;
+                    flag=true;
+                    break;
+                }
+                temp1=temp1->next;
+            }
+        }
+        if(l1->val>9)
+        {
+            ListNode * tmp1=new(ListNode);
+            tmp1->val=1;
+            l1->val-=10;
+            tmp1->next=l1;
+            l1=tmp1;
+        }
+        return l1;
+    }
+
+    ListNode* swapNodes(ListNode* head, int k) {
+        //1721 medium
+        int l=k;
+        ListNode* temp1;
+        ListNode* slow;
+        ListNode* fast;
+        ListNode* tmp;
+        ListNode* head1=new(ListNode);
+        head1->next=head;
+        fast=head1;
+        slow=head1;
+        temp1=head1;
+        while(l-1)
+        {
+            temp1=temp1->next;
+            fast=fast->next;
+            --l;
+        }
+        while(fast->next)
+        {
+            slow=slow->next;
+            fast=fast->next;
+        }
+        fast=temp1->next;
+        temp1->next=temp1->next->next;
+        fast->next=slow->next->next;
+        tmp=slow->next;
+        slow->next=fast;
+        tmp->next=temp1->next;
+        temp1->next=tmp;
+        return head1->next;
+    }
 };
-
-
