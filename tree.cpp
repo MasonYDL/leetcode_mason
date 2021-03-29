@@ -67,15 +67,78 @@ class Solution
         return left && right;
     }
 
+    bool isBalanced(TreeNode* root) {
+        // 110 easy
+        if(!root)
+        {
+            return true;
+        }
+        else
+        return abs(height(root->left)-height(root->right))<=1 && isBalanced(root->left) && isBalanced(root->right);
+    }
+
+    int height(TreeNode* root)
+    {
+        if(!root)
+            return 0;
+        else
+            return max(height(root->left),height(root->right))+1;
+    }
+
+    void Inodrder(TreeNode* root, vector<int> & res)
+    {
+        if(!root)
+            return ;
+        Inodrder(root->left,res);
+        res.push_back(root->val);
+        Inodrder(root->right,res);
+    }
+    TreeNode* increasingBST(TreeNode* root) {
+        //897 easy
+        vector<int> res;
+        Inodrder(root,res);
+        TreeNode *ans=new TreeNode(0), *cur=ans;
+        for(int i=0;i<res.size();++i)
+        {
+            cur->right=new TreeNode(res[i]);
+            cur=cur->right;
+        }
+        return ans->right;
+    }
+
+
+    int maxDepth(TreeNode* root) {
+        //104 easy
+        if(!root)
+            return 0;
+        int left=maxDepth(root->left)+1;
+        int right=maxDepth(root->right)+1;
+        return left>right ? left: right;
+    }
 
 
 
+
+    int diameterOfBinaryTree(TreeNode* root) {
+        //543 easy
+        return helper_543(root->left)+helper_543(root->right);
+    }
+
+    int helper_543(TreeNode* root)
+    {
+        if(!root)
+            return 0;
+        else
+            return max(helper_543(root->left),helper_543(root->right))+1;
+    }
+
+
+    vector<int> zhongxu(TreeNode* root)
+    {
+        stack<TreeNode*> s;
+        
+    }
+    
 };
 
 
-int main()
-{
-    TreeNode root(1);
-    Solution s;
-    cout<<s.findTilt(&root)<<endl;
-}

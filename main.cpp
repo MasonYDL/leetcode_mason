@@ -2123,6 +2123,464 @@ vector<int> dailyTemperatures(vector<int>& T) {
         return false;
     }
   
+    int longestSubstring(string s, int k)
+    {
+        if(k==1)
+            return s.size();
+        if(s.size()<k)
+            return 0;
+        return longestSubstring(s,0,s.size()-1,k);
+    }
+
+    int longestSubstring(string & str, int start, int end, int k)
+    {
+        if(start>=end || end-start+1<k)
+            return 0;
+        vector<int> count(26,0);
+        for(int i=start;i<=end; i++)
+        {
+            ++count[str[i]-'a'];
+        }
+        bool needSplit=false;
+        for(int i=0;i<26;i++)
+            if(count[i]>0 && count[i]<k)
+            {
+                needSplit=true;
+                break;
+            }
+        if(!needSplit)
+            return end-start-1;
+        
+        int ret=0;
+        int left=start, right=start;
+        while(right<=end)
+        {
+            while(left<end)
+            {
+                if(count[str[left]-'a']>=k)
+                    break;
+                ++left;
+            }
+            right=left+1;
+            while(right<=end)
+            {
+                if(count[str[right]-'a']>0 && count[str[right]-'a']<k)
+                    break;
+                ++right;
+            }
+            if(right-left>ret)
+                ret=max(ret,longestSubstring(str,left,right-1,k));
+            left=right+1;
+        }
+        return ret;
+    }
+    int hammingWeight(uint32_t n) {
+        //191 easy
+        int res=0;
+        while(n)
+        {
+            res+=n&1;
+            n>>=1;
+        }
+        return res;
+    }
+
+    bool find132pattern(vector<int>& nums) {
+        //456 medium
+        stack<int> st;
+        int len=nums.size();
+        if(len<3)
+            return false;
+        int k=INT_MIN;
+        for(int i=len-1;i>=0;--i)
+        {
+            if(nums[i]<k)
+                return true;
+            while(!st.empty() && st.top()<nums[i])
+            {
+                k=max(k,st.top());
+                st.pop();
+            }
+            st.push(nums[i]);
+        }
+        return false;
+    }
+
+
+    int longestWPI(vector<int>& hours) {
+        //1124 medium
+        int res=0;
+        int n=hours.size();
+        vector<int> prefixSum(n+1,0);
+        for(int i=1;i<n;++i)
+        {
+            if(hours[i-1]>8)
+                prefixSum[i]=prefixSum[i-1]+1;
+            else
+                prefixSum[i]=prefixSum[i-1]-1;
+        }
+        stack<int> s;
+        s.push(0);
+        for(int i=1;i<n+1;++i)
+            if(prefixSum[s.top()]>prefixSum[i])
+                s.push(i);;
+
+        for(int i=n;i>=0;--i)
+        {
+            while(!s.empty() && prefixSum[i]>prefixSum[s.top()])
+            {
+                res=max(res,i-s.top());
+                s.pop();
+            }
+            if(s.empty())
+                break;
+
+        }
+        return res;
+    }
+
+
+    int lengthOfLongestSubstring(string s) {
+        //3 medium
+        int n=s.size();
+        if(n<2)
+            return n;
+        int res=0;
+        int begin=0;
+        unordered_map<char,int> m;
+        for(int i=0;i<n;++i)
+        {
+            if(m[s[i]])
+            {
+                res=max(res,i-begin);
+                begin=max(begin,m[s[i]]);
+                m[s[i]]=i+1;
+            }
+            else
+            {
+                m[s[i]]=i+1;
+            }
+            cout<<res<<endl;
+        }
+        res=max(res,n-begin);
+        return res;
+    }
+
+
+    bool isPalindrome(int x) {
+        //9 easy
+        if(x<0)
+            return false;
+        if(x==0)
+            return true;
+        vector<int> num;
+        while(x)
+        {
+            num.push_back(x%10);
+            x/=10;
+        }
+        int i=0,j=num.size();
+        while(i<=j)
+        {
+            if(num[i]!=num[j])
+                return false;
+        }
+        return true;
+    }
+
+    int reverse(int x) {
+        //7 easy
+        if(x/10==0)
+            return x;
+        int flag=false;
+        if(x<0)
+            {
+                flag=true;
+                x=abs(x);
+            }
+
+        vector<int> nums;
+        while(x)
+        {
+            nums.push_back(x%10);
+            x/=10;
+        }
+        int res=0;
+        for(int i=0;i<nums.size();++i)
+        {
+            if(res==0 && nums[i]==0)
+                continue;
+            res=res*10+nums[i];
+        }
+        if(flag)
+            return 0-res;
+        return res;
+    }
+
+
+    int removeElement(vector<int>& nums, int val) {
+        //21 easy
+        for(vector<int>::iterator itr=nums.begin();itr!=nums.end();){
+            if(*itr==val){
+                nums.erase(itr);
+            }
+            else{
+                itr++;
+            }
+        }
+        return nums.size(); 
+    }
+    vector<vector<int> > fourSum(vector<int>& nums, int target) {
+        //18 medium
+        if(nums.size()<4)
+            return {};
+        vector<vector<int> > res;
+        sort(nums.begin(),nums.end());
+        int len=nums.size();
+        for(int i=0;i<=len-4;++i)
+        {
+            if(i>0 && nums[i]==nums[i-1])
+                continue;
+            if(nums[i]+nums[i+1]+nums[i+2]+nums[i+3]>target)
+                break;
+            if(nums[i]+nums[len-1]+nums[len-2]+nums[len-3]<target)
+                continue;
+            for(int j=i+1;j<=len-3;++j)
+            {
+                if(j>i+1 && nums[j]==nums[j-1])
+                    continue;
+                if(nums[i]+nums[j]+nums[j+1]+nums[j+2]>target)
+                    break;
+                if(nums[i]+nums[j]+nums[len-2]+nums[len-1]<target)
+                    continue;
+                int left=j+1, right=len-1;
+                while(left<right)
+                {
+                    int temp=nums[i]+nums[j]+nums[left]+nums[right];
+                    if(temp==target)
+                        {res.push_back({nums[i],nums[j],nums[left],nums[right]});
+                    while(left<right && nums[left+1]==nums[left])
+                    left++;
+                    left++;
+                    while(left<right && nums[right-1]==nums[right])
+                    right--;
+                    right--;}
+                else if(temp<target)
+                left++;
+                else
+                right--;
+                }
+            }
+        }
+        return res;
+    }
+    bool canJump(vector<int>& nums) {
+        //55 medium
+        int maxstep=0;
+        for(int i=0;i<nums.size();++i)
+            {if(i<=maxstep)
+                maxstep=max(maxstep,nums[i]+i);
+            
+            if(maxstep>=nums.size()-1)
+                return true;
+            }
+        return false;
+    }
+
+    int threeSumClosest(vector<int>& nums, int target) {
+        //16 medium
+        int len=nums.size();
+        if(nums[len-1]+nums[len-2]+nums[len-3]<target)
+            return nums[len-1]+nums[len-2]+nums[len-3];
+        if(nums[0]+nums[1]+nums[2]>target)
+            return nums[0]+nums[1]+nums[2];
+        int mincut=INT_MAX;
+        for(int i=0;i<len-1;++i)
+        {
+            int j=i+1,k=len-1;
+            while(j<k)
+            {
+                int temp=nums[i]+nums[j]+nums[k];
+                if(temp==target)
+                    return target;
+                if(abs(temp-target)<abs(mincut-target))
+                    mincut=temp;
+                if(temp<target)
+                    ++j;
+                else
+                    --k;
+            }
+        }
+        return mincut;
+    }
+    vector<vector<int> > threeSum(vector<int>& nums) {
+    //15 medium
+        vector<vector<int> > res;
+
+        int n = nums.size();
+        if (n < 3) return res;
+
+        sort(nums.begin(), nums.end());
+
+        for (int i = 0; i < n; i ++ )
+        {
+            if (nums[i] > 0) return res;                    //若第一个数大于0，后面怎么加都不会等于0了
+            if (i > 0 && nums[i] == nums[i - 1]) continue;  //跳过重复数字
+
+            int l = i + 1, r = n - 1;
+            while (l < r)
+            {
+                if (nums[i] + nums[l] + nums[r] == 0)
+                {
+                    res.push_back({nums[i], nums[l], nums[r]});         //加入一个正确方案
+                    while (l < r && nums[l] == nums[l + 1]) l ++ ;      //跳过重复数字
+                    while (l < r && nums[r] == nums[r - 1]) r -- ;
+                    l ++ ;                                              //左指针前进
+                    r -- ;                                              //右指针后退
+                }
+                else if (nums[i] + nums[l] + nums[r] > 0)
+                {
+                    r -- ;      //和大于0，要减少总和之值，即右指针后退
+                }
+                else
+                {
+                    l ++ ;      //和小于0，要增加总和之值，即左指针前进
+                }
+            }
+        }
+
+        return res;
+    }
+
+
+    int divide(int dividend, int divisor) {
+        //29 medium
+        int sign;
+        if( (dividend >= 0 && divisor > 0) || (dividend <= 0 && divisor < 0) ){
+            sign = 0;
+        }else{
+            sign = 1;
+        }
+        long a = abs(dividend), cmp = abs(divisor);
+        long res = 0, partial_sum = 1;
+        int abs_divisor = cmp;
+        if(a < cmp) return 0;
+        while((cmp << 1) < a){
+            cmp = cmp << 1;
+            partial_sum = partial_sum << 1;
+        }
+        while(a >= abs_divisor){
+            a -= cmp;
+            res += partial_sum;
+            //cout << "a: " << a << " cmp: " << cmp << " partial_sum: " << partial_sum << endl;
+            while(cmp > a){
+                cmp = cmp >> 1;
+                partial_sum = partial_sum >> 1;
+            }
+        }
+        if(sign == 1){
+            if(-res < INT_MIN) return INT_MAX;
+            else return -res;
+        }else{
+            if(res > INT_MAX) return INT_MAX;
+            else return res;
+        }
+    }
+
+    string path;
+    vector<string> result;
+    
+    void backtracking_22(int left,int right)
+    {
+        if(left==0 && right==0)
+        {
+            result.push_back(path);
+            return ;
+        }
+        if(left>right)
+            return ;
+        if(left>0)
+        {
+            path+='(';
+            backtracking_22(left-1,right);
+            path.pop_back();
+        }
+        if(right>0)
+        {
+            path+=')';
+            backtracking_22(left,right-1);
+            path.pop_back();
+        }
+    }
+
+    vector<string> generateParenthesis(int n) {
+        //22 medium 
+        backtracking_22(n,n);
+        return result;
+    }
+
+
+    void backtracking__39(vector<int>& candidates, int target, int sum, int startIndex)
+    {
+        if(sum > target) return;
+        if(sum == target)
+        {
+            result.push_back(path);
+            return;
+        }
+        //如果 sum + candidates[i] > target 就终止遍历
+        for(int i = startIndex; i < candidates.size() && sum + candidates[i] <= target; i++)
+        {
+            sum += candidates[i];
+            path.push_back(candidates[i]);
+            backtracking__39(candidates, target, sum, i);//不用i+1，因为此时可以重复
+            sum -= candidates[i];//回溯
+            path.pop_back();//回溯
+        }
+    }
+
+    vector<vector<int> > combinationSum(vector<int>& candidates, int target) {
+        result.clear();
+        path.clear();
+        sort(candidates.begin(), candidates.end());
+        backtracking__39(candidates, target, 0, 0);
+        return result;
+    }
+
+
+ int jump(vector<int> &nums)
+{
+    int ans = 0;
+    int start = 0;
+    int end = 1;
+    while (end < nums.size())
+    {
+        int maxPos = 0;
+        for (int i = start; i < end; i++)
+        {
+            // 能跳到最远的距离
+            maxPos = max(maxPos, i + nums[i]);
+        }
+        start = end;      // 下一次起跳点范围开始的格子
+        end = maxPos + 1; // 下一次起跳点范围结束的格子
+        ans++;            // 跳跃次数
+    }
+    return ans;
+}
+
+    
+  int countNumbersWithUniqueDigits(int n) {
+      //357 medium
+        if(n == 0) return 1;
+        n = min(n, 10);
+        int ans = 10, base = 9, sum = 9;
+        for(int i = 1; i < n; ++i){
+            ans += sum *= base--;
+        }
+        return ans;
+    }
+
+
+
+    
 };
-
-

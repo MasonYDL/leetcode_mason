@@ -531,4 +531,45 @@ public:
         temp1->next=tmp;
         return head1->next;
     }
+
+
+    int getDecimalValue(ListNode* head) {
+        //1290 easy
+        int res=0;
+        while(head)
+        {
+            if(head->val)
+                {
+                    res|=1;
+                }
+            res<<=1;
+        }
+        res>>=1;
+        return res;
+    }
+
+    ListNode* reverseList(ListNode* head) {
+        //offer24 easy
+        ListNode* temp1=head;;
+        ListNode* temp2=head;
+        while(temp2->next)
+            temp2=temp2->next;
+        ListNode* temp3=temp2;
+        while(head!=temp3)
+        {
+            temp1=head;
+            head=head->next;
+            temp1->next=nullptr;
+            temp1->next=temp2->next;
+            temp2->next=temp1;
+        }
+        return temp3;
+    }
+
+    bool hasCycle(ListNode *head) {
+        //141 easy
+        ListNode* slow=head;
+        ListNode* fast=head;
+        
+    }
 };
